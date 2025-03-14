@@ -1,14 +1,17 @@
-HELP.md
-target/
-!.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
+# ===================
+# Generelle IDE og byggmapper
+# ===================
 
+# IntelliJ IDEA
+.idea
+*.iws
+*.iml
+*.ipr
 
-# Ikke last opp application.properties
-src/main/resources/application.properties
+# VS Code
+.vscode/
 
-### STS ###
+# Eclipse / Spring Tools Suite (STS)
 .apt_generated
 .classpath
 .factorypath
@@ -17,21 +20,34 @@ src/main/resources/application.properties
 .springBeans
 .sts4-cache
 
-### IntelliJ IDEA ###
-.idea
-*.iws
-*.iml
-*.ipr
-
-### NetBeans ###
+# NetBeans
 /nbproject/private/
 /nbbuild/
 /dist/
 /nbdist/
 /.nb-gradle/
+
+# Maven / Gradle
+target/
 build/
+!**/src/main/**/target/
+!**/src/test/**/target/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
-### VS Code ###
-.vscode/
+# ===================
+# Wrapper-filer (Maven)
+# ===================
+!.mvn/wrapper/maven-wrapper.jar
+
+# ===================
+# Følsomme konfigurasjoner
+# ===================
+
+# Ikke last opp application.properties (bruk application.properties.example istedenfor)
+src/main/resources/application.properties
+
+# ===================
+# Hjelpefiler
+# ===================
+HELP.md
