@@ -8,6 +8,7 @@ import jakarta.persistence.Id;
 @Entity // Gjør at denne klassen blir en tabell i MySQL
 public class Book {
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // Automatisk ID
     private Long id;
