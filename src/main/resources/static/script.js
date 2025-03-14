@@ -24,6 +24,19 @@ document.addEventListener("DOMContentLoaded", () => {
             message.style.color = "Red";
             return false;
         }
+        if (name === ""){
+            message.textContent = "The name field must be filled"
+            message.style.color = "Red";
+            return false;
+        }else if (author === ""){
+            message.textContent = "The author field must be filled";
+            message.style.color = "Red";
+            return false;
+        }else if (description === ""){
+            message.textContent = "The description field must be filled";
+            message.style.color = "Red";
+            return false;
+        }
 
         // Sjekker at årstall er et gyldig år (fire sifre)
         const yearPattern = /^\d{4}$/;
@@ -32,7 +45,6 @@ document.addEventListener("DOMContentLoaded", () => {
             message.style.color = "Red";
             return false;
         }
-
         // Alt ok
         return true;
     }
@@ -95,9 +107,24 @@ document.addEventListener("DOMContentLoaded", () => {
             })
             .catch(error => console.error('Error fetching books:', error));
     }
+    const resetButton = document.getElementById("resetButton");
+
+    if (resetButton && nameInnput && authorInnput && descriptionInnput && generSelect && yearInnput) {
+        resetButton.addEventListener("click", function() {
+            nameInnput.value = "";
+            authorInnput.value = "";
+            descriptionInnput.value="";
+            generSelect.value = "";
+            yearInnput.value = "";
+
+        });
+    }
+
+
 
     //  Koble submit-knappen til send-funksjonen
     submitbutton.addEventListener("click", collectAndSendBook);
+
 
     //  Hent bøker når siden lastes
     getBooks();

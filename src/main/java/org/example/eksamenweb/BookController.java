@@ -20,6 +20,7 @@ public class BookController {
 
         // Lagre boka
         bookRepository.save(book);
+
         return "Book saved!";
     }
 
