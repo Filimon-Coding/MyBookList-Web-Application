@@ -1,24 +1,31 @@
 package org.example.eksamenweb;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
+import java.util.List;
 
+@CrossOrigin(origins = "*") // Gjør at frontend får lov til å sende
 @RestController
 public class BookController {
 
-    @GetMapping("/date/time")
-    public String getCurrentDateTime() {
-        return "Current date and time: " + LocalDateTime.now();
-    }
+    @Autowired
+    private BookRepository bookRepository;
 
-    @GetMapping("/hello")
-    public String sayHello(@RequestParam String name) {
-        return "Hi " + name + ", welcome to your Spring web app!";
-    }
+    // Lagrer bok
     @PostMapping("/saveBook")
     public String saveBook(@RequestBody Book book) {
-        System.out.println("Received book: " + book);
+        // Skriv ut data som kommer inn (debug)
+        System.out.println("Mottatt bok: " + book.getName() + ", " + book.getAuthor());
+
+        // Lagre boka
+        bookRepository.save(book);
         return "Book saved!";
+    }
+
+    // Henter alle bøker
+    @GetMapping("/getBooks")
+    public List<Book> getAllBooks() {
+        return bookRepository.findAll();
     }
 }

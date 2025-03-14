@@ -1,93 +1,52 @@
-
-
 document.addEventListener("DOMContentLoaded", () => {
-    console.log ("Last opp DOM")
+    console.log("DOM lastet!");
 
+    // Henter elementene fra HTML
     const nameInnput = document.getElementById("nameID");
-    const authorInnput  = document.getElementById("authorID");
+    const authorInnput = document.getElementById("authorID");
     const descriptionInnput = document.getElementById("descriptionID");
-    const generSelect= document.getElementById("genreID");
+    const generSelect = document.getElementById("genreID");
     const yearInnput = document.getElementById("yearID");
     const message = document.getElementById("message");
     const submitbutton = document.getElementById("submitID");
 
-
-
-
-    function validateForm(){
-
+    // Validering av input
+    function validateForm() {
         const name = nameInnput.value.trim();
         const author = authorInnput.value.trim();
         const description = descriptionInnput.value.trim();
         const genre = generSelect.value.trim();
         const year = yearInnput.value.trim();
 
-
-        if (name === "" || author === ""  || description === "" || year === ""){
-            // alert("Fill all the field first")
-            message.textContent = "You have not filed out all the empty input field"
-            message.style.color = "Red"
-        }
-
-
-
-
-        if (name === ""){
-            message.textContent = "The name field must be filled"
-            message.style.color = "Red";
-            return false;
-        }else if (author === ""){
-
-            message.textContent = "The author field must be filled"
-            message.style.color = "Red";
-            return false;
-        }else if (description === ""){
-
-            message.textContent = "The description field must be filled"
-            message.style.color = "Red";
-            return false ;
-        }else if (genre === ""){
-            message.textContent = "Chose genre from the selection";
-            message.style.color = "Red";
-            return false;
-        } else if (year === ""){
-            message.textContent = "The year field must be filled";
-            message.style.color = "Red";
-        return false;
-        }
-        const yearpatteren = /^\d{4}$/;
-        if (!yearpatteren.test(year)){
-            message.textContent = "Please fil vaild year data"
+        // Sjekker om noen felt er tomme
+        if (name === "" || author === "" || description === "" || genre === "" || year === "") {
+            message.textContent = "You must fill out all fields!";
             message.style.color = "Red";
             return false;
         }
 
+        // Sjekker at årstall er et gyldig år (fire sifre)
+        const yearPattern = /^\d{4}$/;
+        if (!yearPattern.test(year)) {
+            message.textContent = "Please enter a valid 4-digit year!";
+            message.style.color = "Red";
+            return false;
+        }
 
-
-
-        console.log (name);
-        console.log (author);
-        console.log (description);
-        console.log (genre);
-        console.log (year);
-
-        message.textContent = "The book registered correctly";
-        message.style.color = "Green";
-
-        return false;
+        // Alt ok
+        return true;
     }
-    message.textContent = "Yes ok ";
-    message.style.color = "green";
 
-    submitbutton.addEventListener("click", validateForm)
+    // Sender bok til backend
+    function collectAndSendBook(event) {
+        event.preventDefault(); // Hindrer refresh
 
-
-    function collectAndSendBook() {
-        if (!validateForm()){
-            console.log("Validering feilet, avbryter sending.")
+        if (!validateForm()) {
+            console.log("Validering feilet. Avbryter sending.");
             return;
         }
 
+        // Lager bok-objekt
         const book = {
             name: nameInnput.value.trim(),
             author: authorInnput.value.trim(),
@@ -96,33 +55,50 @@ document.addEventListener("DOMContentLoaded", () => {
             year: yearInnput.value.trim()
         };
 
-        // Viser data i konsollen for sjekk
-        console.log("Book object to send:", book);
-        // Eller bruk alert for test: alert(JSON.stringify(book));
+        console.log("Sender bok til backend:", book);
 
-        //  Sender til backend med fetch
-        fetch('/saveBook', {
+        // Sender med fetch til backend
+        fetch('http://localhost:8080/saveBook', { // Husk riktig port!
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json' // Forteller backend at vi sender JSON
-            },
-            body: JSON.stringify(book) // Gjør objektet til JSON-streng
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(book)
         })
             .then(response => {
                 if (response.ok) {
                     message.textContent = "Book was successfully saved!";
                     message.style.color = "Green";
+                    getBooks(); // Oppdaterer liste
                 } else {
                     message.textContent = "Failed to save book. Please try again.";
                     message.style.color = "Red";
                 }
             })
             .catch(error => {
-                console.error("Error while saving book:", error);
+                console.error("Error while sending book:", error);
                 message.textContent = "An error occurred while sending the book.";
                 message.style.color = "Red";
             });
     }
 
+    //  Henter og viser bøkene
+    function getBooks() {
+        fetch('http://localhost:8080/getBooks') // Husk riktig port!
+            .then(response => response.json())
+            .then(data => {
+                console.log("Fetched books:", data);
+                let output = "<h2>Book List</h2><ul>";
+                data.forEach(book => {
+                    output += `<li>${book.name} by ${book.author} (${book.year}) - ${book.genre}</li>`;
+                });
+                output += "</ul>";
+                message.innerHTML = output; // Viser listen
+            })
+            .catch(error => console.error('Error fetching books:', error));
+    }
 
+    //  Koble submit-knappen til send-funksjonen
+    submitbutton.addEventListener("click", collectAndSendBook);
+
+    //  Hent bøker når siden lastes
+    getBooks();
 });
