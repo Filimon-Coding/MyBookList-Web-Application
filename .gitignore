@@ -47,6 +47,7 @@ build/
 # Ikke last opp application.properties (bruk application.properties.example istedenfor)
 src/main/resources/application.properties
 
+
 # ===================
 # Hjelpefiler
 # ===================
