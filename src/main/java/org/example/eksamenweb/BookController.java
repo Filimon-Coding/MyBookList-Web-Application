@@ -29,4 +29,16 @@ public class BookController {
     public List<Book> getAllBooks() {
         return bookRepository.findAll();
     }
+
+
+    @DeleteMapping("/deleteBook/{id}")
+    public String deleteBook(@PathVariable Long id){
+        if(bookRepository.existsById(id)){
+            return "Book dleted successfully";
+        }else {
+            return "Book Id has not found";
+        }
+    }
 }
+
+

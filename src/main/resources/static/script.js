@@ -80,6 +80,11 @@ document.addEventListener("DOMContentLoaded", () => {
                     message.textContent = "Book was successfully saved!";
                     message.style.color = "Green";
                     getBooks(); // Oppdaterer liste
+                    nameInnput.value = "";
+                    authorInnput.value = "";
+                    descriptionInnput.value="";
+                    generSelect.value = "";
+                    yearInnput.value = "";
                 } else {
                     message.textContent = "Failed to save book. Please try again.";
                     message.style.color = "Red";
@@ -100,7 +105,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 console.log("Fetched books:", data);
                 let output = "<h2>Book List</h2><ul>";
                 data.forEach(book => {
-                    output += `<li>${book.name} by ${book.author} (${book.year}) - ${book.genre}</li>`;
+                    output += `<li> ID nr ${book.id} :-   ${book.name} by ${book.author} (${book.year}) - ${book.genre}</li>`;
                 });
                 output += "</ul>";
                 message.innerHTML = output; // Viser listen
@@ -120,6 +125,31 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    function deleteBook(){
+        const bookID = document.getElementById("deleteID").value.trim();
+
+        if(!bookID){
+            message.textContent = "Det finnes ikke bok med denne ID nr";
+            message.style.color = "Red";
+            return;
+        }
+            fetch('/deleteBook/${bookID}', {method: "DELETE"})
+                .then(response => response.text())
+                .then(message => {
+                    message.textContent = `Bok med ID ${bookID} er slettet!`; // Viser riktig melding
+                    message.style.color = "Green";
+                    getBooks();
+                })
+                .catch(error => {
+                    console.error("Error deleting book: ", error);
+                    message.textContent = "Feil ved sletting av bok.";
+                    message.style.color = "Red";
+                });
+
+
+
+    }
+
 
 
     //  Koble submit-knappen til send-funksjonen
@@ -128,4 +158,5 @@ document.addEventListener("DOMContentLoaded", () => {
 
     //  Hent bøker når siden lastes
     getBooks();
+    document.addEventListener("DOMContentLoaded", getBooks);
 });
