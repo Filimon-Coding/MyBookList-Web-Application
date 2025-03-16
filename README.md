@@ -1,4 +1,4 @@
-# BookFinder Web Application
+# MyBookList Web Application
 
 ## Description
 
