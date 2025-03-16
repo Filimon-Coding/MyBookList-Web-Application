@@ -108,7 +108,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 console.log("Fetched books:", data);
                 let output = "<h2>Book List</h2><ul>";
                 data.forEach(book => {
-                    output += `<li> ID : ${book.id} :-   ${book.name} by ${book.author} (${book.year}) - ${book.genre}</li>`;
+                    output += `<li> ID : ${book.id} :-   ${book.name} by ${book.author} (${book.year}) - ${book.genre} -  About  - ${book.description}</li>`;
                 });
                 output += "</ul>";
                 message.innerHTML = output; // Viser listen
@@ -127,6 +127,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         });
     }
+    /*
 
     function viewData(){
         fetch('http://localhost:8080/getBooks') // Husk riktig port!
@@ -135,13 +136,61 @@ document.addEventListener("DOMContentLoaded", () => {
                 console.log("Fetched books:", data);
                 let output = "<h2>Book List</h2><ul>";
                 data.forEach(book => {
-                    output += `<li> ID : ${book.id} :-   ${book.name} by ${book.author} (${book.year}) - ${book.genre}</li>`;
+                    output += `<li> ID : ${book.id} :-   ${book.name} by ${book.author} (${book.year}) - ${book.genre}   About  - ${book.description}</li>`;
                 });
                 output += "</ul>";
                 dataMessage.innerHTML = output; // Viser listen
             })
             .catch(error => console.error('Error fetching books:', error));
     }
+
+     */
+
+    function viewData() {
+        fetch('http://localhost:8080/getBooks')
+            .then(response => response.json())
+            .then(data => {
+                console.log("Fetched books:", data);
+
+                let output = `
+                <h2> Book List</h2>
+                <table class="book-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Title</th>
+                            <th>Author</th>
+                            <th>Year</th>
+                            <th>Genre</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+                data.forEach(book => {
+                    output += `
+                    <tr>
+                        <td>${book.id}</td>
+                        <td>${book.name}</td>
+                        <td>${book.author}</td>
+                        <td>${book.year}</td>
+                        <td>${book.genre}</td>
+                        <td>${book.description}</td>
+                    </tr>
+                `;
+                });
+
+                output += `
+                    </tbody>
+                </table>
+            `;
+
+                dataMessage.innerHTML = output;
+            })
+            .catch(error => console.error('Error fetching books:', error));
+    }
+
 
     function deleteBook(){
         const bookID = document.getElementById("deleteID").value.trim();
@@ -173,6 +222,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     //  Hent bøker når siden lastes
     //getBooks() viewdata() // begge har samme oppgave blue vs purple bare
-    viewData()
+    //viewData()
     document.addEventListener("DOMContentLoaded", getBooks);
 });
