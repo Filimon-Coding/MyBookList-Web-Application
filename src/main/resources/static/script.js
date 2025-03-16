@@ -8,7 +8,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const generSelect = document.getElementById("genreID");
     const yearInnput = document.getElementById("yearID");
     const message = document.getElementById("message");
+    const dataMessage = document.getElementById("dataMessage");
     const submitbutton = document.getElementById("submitID");
+    const deletebutton = document.getElementById("deletebuttonID");
+    const viewDataButton = document.getElementById("viewDataID");
 
     // Validering av input
     function validateForm() {
@@ -125,6 +128,21 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    function viewData(){
+        fetch('http://localhost:8080/getBooks') // Husk riktig port!
+            .then(response => response.json())
+            .then(data => {
+                console.log("Fetched books:", data);
+                let output = "<h2>Book List</h2><ul>";
+                data.forEach(book => {
+                    output += `<li> ID nr ${book.id} :-   ${book.name} by ${book.author} (${book.year}) - ${book.genre}</li>`;
+                });
+                output += "</ul>";
+                dataMessage.innerHTML = output; // Viser listen
+            })
+            .catch(error => console.error('Error fetching books:', error));
+    }
+
     function deleteBook(){
         const bookID = document.getElementById("deleteID").value.trim();
 
@@ -133,30 +151,27 @@ document.addEventListener("DOMContentLoaded", () => {
             message.style.color = "Red";
             return;
         }
-            fetch('/deleteBook/${bookID}', {method: "DELETE"})
-                .then(response => response.text())
-                .then(message => {
-                    message.textContent = `Bok med ID ${bookID} er slettet!`; // Viser riktig melding
-                    message.style.color = "Green";
-                    getBooks();
-                })
-                .catch(error => {
-                    console.error("Error deleting book: ", error);
-                    message.textContent = "Feil ved sletting av bok.";
-                    message.style.color = "Red";
-                });
-
-
-
+        fetch(`/deleteBook/${bookID}`, {method: "DELETE"})
+            .then(response => response.text())
+            .then(responseMessage => {
+                message.textContent = `Bok med ID ${bookID} er slettet!`; // Viser riktig melding
+                message.style.color = "Green";
+            })
+            .catch(error => {
+                console.error("Error deleting book: ", error);
+                message.textContent = "Feil ved sletting av bok.";
+                message.style.color = "Red";
+            });
     }
 
 
 
     //  Koble submit-knappen til send-funksjonen
     submitbutton.addEventListener("click", collectAndSendBook);
-
+    deletebutton.addEventListener("click", deleteBook);
+    viewDataButton.addEventListener("click", viewData);
 
     //  Hent bøker når siden lastes
-    getBooks();
+    //getBooks();
     document.addEventListener("DOMContentLoaded", getBooks);
 });
