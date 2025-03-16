@@ -108,7 +108,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 console.log("Fetched books:", data);
                 let output = "<h2>Book List</h2><ul>";
                 data.forEach(book => {
-                    output += `<li> ID nr ${book.id} :-   ${book.name} by ${book.author} (${book.year}) - ${book.genre}</li>`;
+                    output += `<li> ID : ${book.id} :-   ${book.name} by ${book.author} (${book.year}) - ${book.genre}</li>`;
                 });
                 output += "</ul>";
                 message.innerHTML = output; // Viser listen
@@ -135,7 +135,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 console.log("Fetched books:", data);
                 let output = "<h2>Book List</h2><ul>";
                 data.forEach(book => {
-                    output += `<li> ID nr ${book.id} :-   ${book.name} by ${book.author} (${book.year}) - ${book.genre}</li>`;
+                    output += `<li> ID : ${book.id} :-   ${book.name} by ${book.author} (${book.year}) - ${book.genre}</li>`;
                 });
                 output += "</ul>";
                 dataMessage.innerHTML = output; // Viser listen
@@ -172,6 +172,7 @@ document.addEventListener("DOMContentLoaded", () => {
     viewDataButton.addEventListener("click", viewData);
 
     //  Hent bøker når siden lastes
-    //getBooks();
+    //getBooks() viewdata() // begge har samme oppgave blue vs purple bare
+    viewData()
     document.addEventListener("DOMContentLoaded", getBooks);
 });
