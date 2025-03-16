@@ -2,7 +2,7 @@
 
 ## Description
 
-**BookFinder** is a full-stack web application that allows users to **add**, **view**, and **delete books** in a structured and responsive interface. The system is designed to demonstrate practical skills in **Java (Spring Boot)** for backend API development, **MySQL** for persistent data storage, and **HTML, CSS, JavaScript (Fetch API)** for frontend user interaction.
+**MyBookList** is a full-stack web application that allows users to **add**, **view**, and **delete books** in a structured and responsive interface. The system is designed to demonstrate practical skills in **Java (Spring Boot)** for backend API development, **MySQL** for persistent data storage, and **HTML, CSS, JavaScript (Fetch API)** for frontend user interaction.
 
 The application focuses on **real-time communication between frontend and backend**, where books are added and removed dynamically using RESTful APIs without page refresh. 
 
