@@ -49,6 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
             return false;
         }
         // Alt ok
+// alt ok
         return true;
     }
 
